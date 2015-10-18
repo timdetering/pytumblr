@@ -7,13 +7,14 @@ import urlparse
 import code
 import oauth2 as oauth
 
+
 def new_oauth(yaml_path):
     '''
     Return the consumer and oauth tokens with three-legged OAuth process and
     save in a yaml file in the user's home directory.
     '''
 
-    print 'Retrieve consumer key and consumer secret from http://www.tumblr.com/oauth/apps'
+    print('Retrieve consumer key and consumer secret from http://www.tumblr.com/oauth/apps')
     consumer_key = raw_input('Paste the consumer key here: ')
     consumer_secret = raw_input('Paste the consumer secret here: ')
 
@@ -26,10 +27,10 @@ def new_oauth(yaml_path):
 
     # Get request token
     resp, content = client.request(request_token_url, "POST")
-    request_token =  urlparse.parse_qs(content)
+    request_token = urlparse.parse_qs(content)
 
     # Redirect to authentication page
-    print '\nPlease go here and authorize:\n%s?oauth_token=%s' % (authorize_url, request_token['oauth_token'][0])
+    print('\nPlease go here and authorize:\n%s?oauth_token=%s' % (authorize_url, request_token['oauth_token'][0]))
     redirect_response = raw_input('Allow then paste the full redirect URL here:\n')
 
     # Retrieve oauth verifier
@@ -58,6 +59,7 @@ def new_oauth(yaml_path):
 
     return tokens
 
+
 if __name__ == '__main__':
     yaml_path = os.path.expanduser('~') + '/.tumblr'
 
@@ -75,6 +77,6 @@ if __name__ == '__main__':
         tokens['oauth_token_secret']
     )
 
-    print 'pytumblr client created. You may run pytumblr commands prefixed with "client".\n'
+    print('pytumblr client created. You may run pytumblr commands prefixed with "client".\n')
 
     code.interact(local=dict(globals(), **{'client': client}))
