@@ -8,7 +8,8 @@ class TumblrRestClient(object):
     A Python Client for the Tumblr API
     """
 
-    def __init__(self, consumer_key, consumer_secret="", oauth_token="", oauth_secret="", host="https://api.tumblr.com"):
+    def __init__(self, consumer_key, consumer_secret="", oauth_token="", oauth_secret="",
+                 host="https://api.tumblr.com"):
         """
         Initializes the TumblrRestClient object, creating the TumblrRequest
         object which deals with all request formatting.
@@ -32,6 +33,7 @@ class TumblrRestClient(object):
         """
         Gets the information about the current given user
 
+        :rtype : dict
         :returns: A dict created from the JSON response
         """
         return self.send_api_request("get", "/v2/user/info")
@@ -80,6 +82,8 @@ class TumblrRestClient(object):
         """
         Gets the dashboard of the current user
 
+        :rtype : TODO
+        :param kwargs: TODO
         :param limit: an int, the number of posts you want returned
         :param offset: an int, the posts you want to start at, for pagination.
         :param type:   the type of post you want to return
@@ -89,7 +93,8 @@ class TumblrRestClient(object):
 
         :returns: A dict created from the JSON response
         """
-        return self.send_api_request("get", "/v2/user/dashboard", kwargs, ["limit", "offset", "type", "since_id", "reblog_info", "notes_info"])
+        return self.send_api_request("get", "/v2/user/dashboard", kwargs,
+                                     ["limit", "offset", "type", "since_id", "reblog_info", "notes_info"])
 
     def tagged(self, tag, **kwargs):
         """
@@ -107,7 +112,7 @@ class TumblrRestClient(object):
         """
         kwargs.update({'tag': tag})
         return self.send_api_request("get", '/v2/tagged', kwargs, ['before', 'limit', 'filter', 'tag', 'api_key'], True)
-    
+
     @validate_blogname
     def posts(self, blogname, type=None, **kwargs):
         """
@@ -127,9 +132,11 @@ class TumblrRestClient(object):
         if type is None:
             url = '/v2/blog/{0}/posts'.format(blogname)
         else:
-            url = '/v2/blog/{0}/posts/{1}'.format(blogname,type)
-        return self.send_api_request("get", url, kwargs, ['id', 'tag', 'limit', 'offset', 'reblog_info', 'notes_info', 'filter', 'api_key'], True)
-    
+            url = '/v2/blog/{0}/posts/{1}'.format(blogname, type)
+        return self.send_api_request("get", url, kwargs,
+                                     ['id', 'tag', 'limit', 'offset', 'reblog_info', 'notes_info', 'filter', 'api_key'],
+                                     True)
+
     @validate_blogname
     def blog_info(self, blogname):
         """
@@ -142,7 +149,7 @@ class TumblrRestClient(object):
         """
         url = "/v2/blog/{0}/info".format(blogname)
         return self.send_api_request("get", url, {}, ['api_key'], True)
-    
+
     @validate_blogname
     def followers(self, blogname, **kwargs):
         """
@@ -157,7 +164,7 @@ class TumblrRestClient(object):
         """
         url = "/v2/blog/{0}/followers".format(blogname)
         return self.send_api_request("get", url, kwargs, ['limit', 'offset'])
-    
+
     @validate_blogname
     def blog_likes(self, blogname, **kwargs):
         """
@@ -174,7 +181,7 @@ class TumblrRestClient(object):
         """
         url = "/v2/blog/{0}/likes".format(blogname)
         return self.send_api_request("get", url, kwargs, ['limit', 'offset', 'before', 'after'], True)
-    
+
     @validate_blogname
     def queue(self, blogname, **kwargs):
         """
@@ -284,7 +291,7 @@ class TumblrRestClient(object):
         """
         kwargs.update({"type": "photo"})
         return self._send_post(blogname, kwargs)
-    
+
     @validate_blogname
     def create_text(self, blogname, **kwargs):
         """
@@ -530,7 +537,7 @@ class TumblrRestClient(object):
             if isinstance(params['data'], list):
                 for idx, data in enumerate(params['data']):
                     with open(data, 'rb') as f:
-                        files.append(('data['+str(idx)+']', data, f.read()))
+                        files.append(('data[' + str(idx) + ']', data, f.read()))
             else:
                 with open(params['data'], 'rb') as f:
                     files = [('data', params['data'], f.read())]

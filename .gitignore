@@ -7,3 +7,15 @@ dist
 .coverage
 cover
 *.egg
+
+# Mergetool:
+*.BACKUP.*
+*.BASE.*
+*.LOCAL.*
+*.REMOTE.*
+*.orig
+
+# PyCharm project files
+.idea/dictionaries
+.idea/misc.xml
+.idea/workspace.xml

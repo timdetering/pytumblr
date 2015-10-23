@@ -1,11 +1,13 @@
 #!/usr/bin/python
 
-import pytumblr
-import yaml
 import os
-import urlparse
 import code
+
+import yaml
 import oauth2 as oauth
+
+import pytumblr
+import urlparse
 
 
 def new_oauth(yaml_path):
@@ -53,9 +55,8 @@ def new_oauth(yaml_path):
         'oauth_token_secret': access_token['oauth_token_secret'][0]
     }
 
-    yaml_file = open(yaml_path, 'w+')
-    yaml.dump(tokens, yaml_file, indent=2)
-    yaml_file.close()
+    with open(yaml_path, 'w+') as yaml_file:
+        yaml.dump(tokens, yaml_file, indent=2)
 
     return tokens
 
@@ -66,9 +67,8 @@ if __name__ == '__main__':
     if not os.path.exists(yaml_path):
         tokens = new_oauth(yaml_path)
     else:
-        yaml_file = open(yaml_path, "r")
-        tokens = yaml.safe_load(yaml_file)
-        yaml_file.close()
+        with open(yaml_path, "r") as yaml_file:
+            tokens = yaml.safe_load(yaml_file)
 
     client = pytumblr.TumblrRestClient(
         tokens['consumer_key'],

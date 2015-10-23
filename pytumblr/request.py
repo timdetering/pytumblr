@@ -39,7 +39,7 @@ class TumblrRequest(object):
         try:
             client.follow_redirects = False
             resp, content = client.request(url, method="GET", redirections=False, headers=self.headers)
-        except RedirectLimit, e:
+        except RedirectLimit as e:
             resp, content = e.args
 
         return self.json_parse(content)
@@ -63,7 +63,7 @@ class TumblrRequest(object):
                 client = oauth.Client(self.consumer, self.token)
                 resp, content = client.request(url, method="POST", body=urllib.urlencode(params), headers=self.headers)
                 return self.json_parse(content)
-        except urllib2.HTTPError, e:
+        except urllib2.HTTPError as e:
             return self.json_parse(e.read())
 
     def json_parse(self, content):
@@ -77,7 +77,7 @@ class TumblrRequest(object):
         """
         try:
             data = json.loads(content)
-        except ValueError, e:
+        except ValueError as e:
             data = {'meta': { 'status': 500, 'msg': 'Server Error'}, 'response': {"error": "Malformed JSON or HTML was returned."}}
         
         #We only really care about the response if we succeed
