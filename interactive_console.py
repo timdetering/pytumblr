@@ -2,12 +2,12 @@
 
 import os
 import code
+import urlparse
 
 import yaml
 import oauth2 as oauth
 
 import pytumblr
-import urlparse
 
 
 def new_oauth(yaml_path):

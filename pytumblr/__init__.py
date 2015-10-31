@@ -39,15 +39,15 @@ class TumblrRestClient(object):
         return self.send_api_request("get", "/v2/user/info")
 
     @validate_blogname
-    def avatar(self, blogname, size=64):
+    def avatar(self, blog_name, size=64):
         """
         Retrieves the url of the blog's avatar
         
-        :param blogname: a string, the blog you want the avatar for
+        :param blog_name: a string, the blog you want the avatar for
         
         :returns: A dict created from the JSON response
         """
-        url = "/v2/blog/{0}/avatar/{1}".format(blogname, size)
+        url = "/v2/blog/{0}/avatar/{1}".format(blog_name, size)
         return self.send_api_request("get", url)
 
     def likes(self, **kwargs):
@@ -118,7 +118,7 @@ class TumblrRestClient(object):
         """
         Gets a list of posts from a particular blog
 
-        :param blogname: a string, the blogname you want to look up posts
+        :param blogname: a string, the blog name you want to look up posts
                          for. eg: codingjester.tumblr.com
         :param id: an int, the id of the post you are looking for on the blog
         :param tag: a string, the tag you are looking for on posts

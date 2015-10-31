@@ -2,10 +2,11 @@ import urllib
 import urllib2
 import time
 import json
-
 from urlparse import parse_qsl
+
 import oauth2 as oauth
 from httplib2 import RedirectLimit
+
 
 class TumblrRequest(object):
     """
@@ -14,12 +15,13 @@ class TumblrRequest(object):
 
     __version = "0.0.7";
 
-    def __init__(self, consumer_key, consumer_secret="", oauth_token="", oauth_secret="", host="https://api.tumblr.com"):
+    def __init__(self, consumer_key, consumer_secret="", oauth_token="", oauth_secret="",
+                 host="https://api.tumblr.com"):
         self.host = host
         self.consumer = oauth.Consumer(key=consumer_key, secret=consumer_secret)
         self.token = oauth.Token(key=oauth_token, secret=oauth_secret)
         self.headers = {
-            "User-Agent" : "pytumblr/" + self.__version
+            "User-Agent": "pytumblr/" + self.__version
         }
 
     def get(self, url, params):
@@ -78,10 +80,11 @@ class TumblrRequest(object):
         try:
             data = json.loads(content)
         except ValueError as e:
-            data = {'meta': { 'status': 500, 'msg': 'Server Error'}, 'response': {"error": "Malformed JSON or HTML was returned."}}
-        
-        #We only really care about the response if we succeed
-        #and the error if we fail
+            data = {'meta': {'status': 500, 'msg': 'Server Error'},
+                    'response': {"error": "Malformed JSON or HTML was returned."}}
+
+        # We only really care about the response if we succeed
+        # and the error if we fail
         if data['meta']['status'] in [200, 201, 301]:
             return data['response']
         else:
@@ -97,7 +100,7 @@ class TumblrRequest(object):
 
         :returns: a dict parsed from the JSON response
         """
-        #combine the parameters with the generated oauth params
+        # combine the parameters with the generated oauth params
         params = dict(params.items() + self.generate_oauth_params().items())
         faux_req = oauth.Request(method="POST", url=url, parameters=params)
         faux_req.sign_request(oauth.SignatureMethod_HMAC_SHA1(), self.consumer, self.token)
@@ -106,7 +109,7 @@ class TumblrRequest(object):
         content_type, body = self.encode_multipart_formdata(params, files)
         headers = {'Content-Type': content_type, 'Content-Length': str(len(body))}
 
-        #Do a bytearray of the body and everything seems ok
+        # Do a bytearray of the body and everything seems ok
         r = urllib2.Request(url, bytearray(body), headers)
         content = urllib2.urlopen(r).read()
         return self.json_parse(content)
