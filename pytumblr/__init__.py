@@ -114,7 +114,7 @@ class TumblrRestClient(object):
         return self.send_api_request("get", '/v2/tagged', kwargs, ['before', 'limit', 'filter', 'tag', 'api_key'], True)
 
     @validate_blogname
-    def posts(self, blogname, type=None, **kwargs):
+    def posts(self, blog_name, type=None, **kwargs):
         """
         Gets a list of posts from a particular blog
 
@@ -130,9 +130,9 @@ class TumblrRestClient(object):
         :returns: a dict created from the JSON response
         """
         if type is None:
-            url = '/v2/blog/{0}/posts'.format(blogname)
+            url = '/v2/blog/{0}/posts'.format(blog_name)
         else:
-            url = '/v2/blog/{0}/posts/{1}'.format(blogname, type)
+            url = '/v2/blog/{0}/posts/{1}'.format(blog_name, type)
         return self.send_api_request("get", url, kwargs,
                                      ['id', 'tag', 'limit', 'offset', 'reblog_info', 'notes_info', 'filter', 'api_key'],
                                      True)
@@ -151,7 +151,7 @@ class TumblrRestClient(object):
         return self.send_api_request("get", url, {}, ['api_key'], True)
 
     @validate_blogname
-    def followers(self, blogname, **kwargs):
+    def followers(self, blog_name, **kwargs):
         """
         Gets the followers of the given blog
         :param limit: an int, the number of followers you want returned
@@ -162,7 +162,7 @@ class TumblrRestClient(object):
 
         :returns: A dict created from the JSON response
         """
-        url = "/v2/blog/{0}/followers".format(blogname)
+        url = "/v2/blog/{0}/followers".format(blog_name)
         return self.send_api_request("get", url, kwargs, ['limit', 'offset'])
 
     @validate_blogname
